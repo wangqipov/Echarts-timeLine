@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="static/css/common/element-ui-2.12.0.min.css" rel="stylesheet">
+    <link href="static/css/common/common.css" rel="stylesheet" />
+    <link href="static/js/timeline/yiwendaoCss/casehistory.css" rel="stylesheet"/>
+    <link href="static/js/timeline/yiwendaoCss/history.css" rel="stylesheet"/>
+    <link href="static/css/fontPic/style.css" rel="stylesheet"/>
+
+    <style type="text/css">
+
+        /*定义滚动条宽高及背景，宽高分别对应横竖滚动条的尺寸*/
+        .left-cont::-webkit-scrollbar{
+
+            display: none;
+        }
+        /*定义滚动条的轨道，内阴影及圆角*/
+        .left-cont::-webkit-scrollbar-track{
+
+            display: none;
+        }
+        /*定义滑块，内阴影及圆角*/
+        .left-cont::-webkit-scrollbar-thumb{
+
+           display: none;
+        }
+        [v-cloak] {
+            display: none;
+        }
+        .fix_left{
+            position: fixed;
+            /*top: 0;*/
+            left: 0;
+            z-index: 100;
+            height: calc(100vh - 84px);
+            overflow: auto;
+        }
+        .fix_top{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+
+        body {
+            margin: 0;
+            background-color: #fafafa !important;
+            font-family: "微软雅黑";
+        }
+
+        hl {
+            color:red;
+            font-weight:700;
+        }
+        .tooltip {
+            opacity: 1;
+        }
+        .el-select {
+            display: inline-block;
+            width: auto;
+            position: relative;
+        }
+        .guanxi{
+            margin-right: 4px;
+        }
+ 
+
+        .width100{
+            width: 100%;
+        }
+        .box{
+            display: -moz-box;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: box;
+
+        }
+        .boxVertical{  /*垂直*/
+            -webkit-box-orient:vertical;
+            -moz-box-orient:vertical;
+            -box-orient:vertical;
+            flex-direction:column;
+        }
+
+
+
+        .pntM_block{
+            padding: 0 10px;
+        }
+
+        #pntModal_tab1 .el-tabs__header{
+            border-bottom: 1px solid #EAEAEA;
+            padding-left: 30px;
+        }
+
+        #pntModal_tab1 .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+            color: #20a0ff;
+        }
+        #pntModal_tab1 .el-button--primary.is-plain:hover {
+            background: #409eff;
+            border-color: #409eff;
+            color: #fff;
+        }
+        .el-tabs__header{
+            margin:0;
+            padding-left: 4px;
+        }
+        .el-tabs__content{
+            /*box-shadow: 0px 3px 6px #e4e4e4 inset;*/
+            /*padding: 15px 0px 15px 30px;*/
+        }
+
+        .top1{
+            color:#6d7d99;
+            font-size:14px;
+            line-height:28px;
+            background-color: #fafafa;
+            padding: 5px 10px 5px 21px;
+        }
+
+
+        .tooltip{
+            position: relative;
+            border: 1px solid #ebeef5;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+            background-color: #FFFFFF;
+            margin:-5px;
+            width:400px;
+
+        }
+        .tooltip_p_line{
+            background-color: #E9E9E9;
+            height: 1px;
+            width:360px;
+            margin: 15px 0;
+        }
+        .tooltip_p_Rightline {
+            float: right;
+            background-color: #B9DAF9;
+            height: 79px;
+            top: 0px;
+            right: -20px;
+            position: absolute;
+            width: 4px;
+        }
+        .tooltip_title{
+            background-color: #E8F1FF;
+            padding: 15px 20px;
+        }
+        .tooltip_title_top{
+            font-size: 16px;
+            color:#3984FD;
+        }
+        .tooltip_title_bottom{
+            font-size: 13px;
+            color:#AFB2B7;
+        }
+        .tooltip_p{
+            /*max-height: 80vh;*/
+            overflow-y:auto;
+            width:100%;
+            padding:15px 20px;
+        }
+        .tooltip_p_t{
+            font-size: 15px;
+            color:#4B4B4B;
+            padding-bottom: 5px;
+        }
+        .tooltip_p_block{
+            position:relative;
+        }
+        .tooltip_p_p{
+            font-size: 13px;
+            color:#4B4B4B;
+            min-height: 86px;
+        }
+        .tooltip_medicine_b{
+            display: block;
+            padding: 5px 0;
+        }
+        .tooltip_medicine_left{
+            display: block;
+            width:105px;
+            float: left;
+            font-size: 14px;
+            color:#666D75;
+        }
+        .tooltip_medicine_right{
+            font-size: 13px;
+            color:#151515;
+            width: 257px;
+            display: inline-block;
+            word-wrap: break-word;
+            white-space: pre-line;
+            max-height: 20vh;
+            overflow: auto;
+        }
+        .el-checkbox__label {
+            word-wrap: break-word;
+            white-space: pre-line;
+        }
+        .el-dialog{
+            border: 1px solid #ebeef5;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+        }
+        .dialogbottomline{
+            margin: 20px 0px;
+            background: #EBEBEB;
+            height: 1px;
+        }
+        .circle {
+            cursor: pointer;
+            height: 14px;
+            width: 14px;
+            line-height: 1;
+            margin-left: 5px;
+            color: white;
+            padding-left: 1.7px;
+            border-radius: 15px;
+            background: #B3BAC7;
+            display: inline-block;
+        }
+        .checked_block {
+            display: inline-block;
+            background: #F0F5F9;
+            margin: 5px 10px 0 0;
+            padding: 5px 8px;
+            border-radius: 5px;
+        }
+        .word_wrap{
+            word-wrap:break-word;
+            white-space:pre-line;
+        }
+        .search_input {
+            background: url(static/img/icon-search.png) no-repeat 10px #fff;
+            background-size: 18px;
+            padding: 0px 80px 0px 40px;
+        }
+        .clear:after { clear:both;content:'';display:block;width:0;height:0;visibility:hidden; }
+
+
+        .el-checkbox {
+            margin: 5px;
+            width: 97%;
+        }
+        .el-checkbox+.el-checkbox {
+            margin: 5px;
+        }
+        .el-checkbox.el-checkbox {
+            width: 48%;
+        }
+        #dangcijiuzhen .el-radio-button__inner{
+            border:none;
+            padding: 1px 15px;
+            margin-right: 1px;
+        }
+        .dangcijiuzhenline .el-radio-button__inner{
+            border-right: 1px solid #E8E8E8!important;
+        }
+        .guanxi .el-input{
+            width: 100px!important;
+        }
+        .ZXSJbox{
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px 0;
+            padding: 0 10px;
+            border-right: 1px solid #EAEAEA;
+        }
+        .el-input__icon {//app.css文件被改乱了，这里单独改好
+        height:auto!importment;
+
+        }
+        .plus{
+            position: absolute;
+            right:0;
+            background: url(static/img/plus1.png) no-repeat center;
+            cursor: pointer;
+            margin: 3px 10px 0 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+        }
+        .minus{
+            position: absolute;    
+            right: 45px;
+            background: url(static/img/minus.png) no-repeat center;
+            cursor: pointer;
+            margin: 3px 10px 0 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+        }
+        .plus:hover,.minus:hover{
+            background-color:  #D3E0F1;
+        }
+        .plus:active,.minus:active{
+            background-color:  #D3E0F1;
+        }
+        .jiahao{
+            box-shadow: grey 0 2px 2px;
+            cursor: pointer;
+            margin: 3px 10px 0 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            background: #009FFF;
+            font-size: 30px;
+            color: white;
+            line-height: 26px;
+            padding-left: 4px;
+        }
+        .jianhao{
+            box-shadow: grey 0 2px 2px;
+            cursor: pointer;
+            margin: 3px 10px 0 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            background: #009FFF;
+            font-size: 30px;
+            color: white;
+            line-height: 26px;
+            padding-left: 8.5px;
+        }
+        .jiahao:active,.jianhao:active{
+            box-shadow: grey 0 1px 5px inset;
+        }
+        .fontnoselect{
+            /*禁止文字被鼠标选中*/
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select:none;
+            -khtml-user-select:none;
+            -webkit-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+        }
+        .datatime {
+            width: 192px;
+
+        }
+        table, td, th{
+            border:1px solid #e3ebf4;
+        }
+
+        .cutoff {
+            display: inline-block;
+            height: 15px;
+            border-right: 1px solid #ECECEC;
+            margin-top: 6px;
+        }
+ /* 患者视图 */
+        .h_main_cont {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #fff;
+            height: calc(100vh - 132px);
+        }
+
+        .h_left_cont {
+            width: 340px;
+            float: left;
+            overflow-y: auto;
+            height: 100%;
+            background-color: #fff;
+            padding: 26px 0;
+        }
+
+        .h_left_body {
+            margin: 0 auto;
+            background: url(static/img/timebody.png) no-repeat;
+            background-position: center;
+            background-size: auto 100%;
+            height: 100%;
+            position: relative;
+        }
+        .h_left_body2{
+             background: url(static/img/timebody2.png) no-repeat;
+            background-position: center;
+            background-size: auto 100%;
+        }
+        .h_right_cont {
+            margin-left: 340px;
+            height: 99%;
+            padding: 16px 20px 18px 16vh;
+            background: url(static/img/rightBoxLeft.png) no-repeat top left,
+                url(static/img/rightBoxR.png) no-repeat top right;
+            ;
+            background-size: auto 100%;
+            margin-right: 127px;
+            margin-top:1%;
+            display: flex;
+            flex-direction: column;
+        }
+        .h_right_top{
+            height:24vh;
+        }
+        .h_right_conts {
+            padding: 12px 25px 0px 16vh;
+        }
+
+        .smokeStyle {
+            color: #5569b1;
+            font-size: 20px;
+            top: 23%;
+            left: 50%;
+            margin-left: -44px;
+        }
+
+        .nationStyle {
+            color: #b6809b;
+            font-size: 16px;
+            top: 56%;
+            left: 50%;
+            margin-left: 8px;
+            position: absolute;
+        }
+
+        .drinkStyle {
+                color: #7269a6;
+            font-size: 16px;
+            top: 29%;
+            left: 50%;
+            margin-left: -27px;
+        }
+
+        .h_left_body span {
+            position: absolute;
+        }
+
+        .h_card_left {
+            width: 48%;
+            margin: 0 1%;
+            height: 100%;
+            float: left;
+            position: relative;
+            background: #f5f6fa url(static/img/bg_icon1.png) no-repeat left top;
+            padding: 20px;
+            color: #666;
+            box-shadow: 3px 6px 14px -3px #ccc;
+        }
+
+        .h_card_left ul li {
+            margin-bottom: 1vh;
+            padding-right: 16px;
+        }
+
+        .h_card_left ul li span {
+            color: #999;
+        }
+
+        .h_card_left:last-child {
+            background: #f5f6fa url(static/img/bg_icon2.png) no-repeat right top;
+        }
+
+        .h_card_left.h_card_lefts {
+            width: 100%;
+            height: 96%;
+            background-color: #f5f6fa;
+            background-image: url(static/img/bg_icon1.png), url(static/img/bg_icon2.png), url(static/img/bg_icon3.png), url(static/img/bg_icon4.png);
+            background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+            background-position: left top, right top, left bottom, right bottom;
+            display: flex;
+        }
+
+        .h_card_left.h_card_lefts ul {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .card_title {
+            display: inline-block;
+            width: 100px;
+            height: 34px;
+            position: absolute;
+            top: -17px;
+            left: 56px;
+            background: url(static/img/bg_title.png) no-repeat;
+            background-size: cover;
+            line-height: 34px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .h_right_bottom {
+            width: 98%;
+            margin: 0 1%;
+            margin-top: 3vh;
+            flex:1;
+            position: relative;
+            background-color: #f5f6fa;
+            background-image: url("static/img/bg_icon3.png"), url("static/img/bg_icon4.png");
+            background-repeat: no-repeat, no-repeat;
+            background-position: left bottom, right bottom;
+            padding: 20px;
+            color: #666;
+            box-shadow: 3px 6px 14px -3px #ccc;
+        }
+
+        .h_table {
+            width: 100%;
+        }
+
+        .h_table_title {
+            color: #000;
+            position: relative;
+            padding-left: 8px;
+            margin:4px 0;
+        }
+        .h_table_title span{
+            margin-left:12px;
+            color:#7269a6;
+        }
+        .h_table_title::before {
+            content: "";
+            width: 4px;
+            height: 16px;
+            display: inline-block;
+            background: #6699cc;
+            position: absolute;
+            top: 3px;
+            left: 0;
+            border-radius: 14px;
+        }
+        .linesBg{
+             background: url("static/img/bg_line.png") no-repeat;
+             width:100%;
+             display:inline-block;
+             background-size:100% 6px;
+             background-position: 0 4px;
+             padding:0 18px;
+        }
+        .h_table .el-table__body,.h_table .el-table__footer,.h_table .el-table__header{
+            border-collapse: collapse;
+        }
+        .h_tables .el-table th{
+            padding:6px 0;
+            position: initial;
+            overflow: initial;
+        }
+        .h_tables .el-table td{
+            padding:3px 0;
+        }
+        .iconMoren {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: url(static/img/icon_moren.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            cursor: pointer;
+        }
+
+        .iconMoren:hover {
+            background: url(static/img/icon_hover.png) no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .titlePic{
+            font-size: 32px;
+            float: left;
+            padding: 0 7px 0 0;
+        }
+        .opera span{
+            display:block;
+            text-align:center;
+        }
+        .opera{
+            display:inline-block;
+            background: url(static/img/opea1.png) no-repeat;
+            background-position: center top;
+                display: inline-block;
+            height: 100%;
+            vertical-align: top;
+            padding-top: 14px;
+        }
+        .opera0{
+            background: url(static/img/opea1.png) no-repeat;
+            background-position: center top;
+        }
+        .opera1{
+            background: url(static/img/opea2.png) no-repeat;
+            background-position: center top;
+        }
+        .opera2{
+            background: url(static/img/opea3.png) no-repeat;
+            background-position: center top;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="app" v-cloak>
+
+    <main class="box boxVertical" style="background-color: #FFFFFF;margin: 0;">
+
+        <div class="box width100">
+
+            
+            <el-tabs style="background: white;height: calc(100vh - 43px);" class="width100"  id="pntModal_tab1" v-model="pntModal_activeName" @tab-click="pntModal_handleClick">
+  
+                <el-tab-pane v-if="showQJST" label="图" name="2" style=" padding: 2px 0px 15px 30px;box-shadow: rgb(228, 228, 228) 0px 3px 6px inset;height: calc(100vh - 83px);overflow-y: auto;overflow-x: hidden;width:100%;">
+                     <el-popover
+                        placement="top-start"
+                        width="200"
+                        trigger="hover"
+                        content="1.鼠标置于全景视图左右边缘时，滑轮控制页面滚动.&#10
+                        2.鼠标置于折线图上时，滑轮控制时间段缩放，可左右拖动统计图.">
+                        <el-tag size="small" style="float: left;cursor: pointer;" type="success" slot="reference">tips</el-tag>
+                      </el-popover>
+                  
+             
+                    <div @click="setChartSize(1)" class="box plus fontnoselect clear" style="float:right;margin-right: 20px;position: relative;"></div>
+                    <div @click="setChartSize(0)" class="box minus fontnoselect clear" style="float:right;position: relative;"></div>
+                    <div id="pntModal_chart" style="width:100%;margin-top: 24px;">
+
+                    </div>
+
+           
+                    <el-dialog
+                            :modal=false
+                            :visible.sync="jianchaFilterVisible"
+                            :show-close=false
+                    >
+                        <div>
+                            <input v-model="search_input" type="text"  @change="searchinput()" placeholder="请输入关键字" name="search" value="" autocomplete="off" class="el-input__inner search_input" style="border-radius: 3px; height: 40px;">
+                        </div>
+                        <div style="margin: 20px 0 10px;max-height: 150px;overflow: auto;" id="shaixuanxiang">
+                            <el-checkbox-group  v-model="dialogshowItem">
+                                <template  v-for="o in dialogItem">
+                                    <el-checkbox :label="o"></el-checkbox>
+                                </template>
+                            </el-checkbox-group>
+                        </div>
+
+                        <div class="dialogbottomline"></div>
+                        <div>
+                            <div class="clear">
+                                <div style="float: left;">已选</div>
+                                <div style="float: right;"><span style="color: #FEAC55;">{{dialogshowItem.length}}</span>/<span>{{dialogItem.length}}</span></div>
+                            </div>
+                            <div style="margin: 20px 0 10px;max-height: 150px;overflow: auto;">
+                                <div v-for="o in dialogshowItem" class="checked_block"><span>{{o}}</span><span class="circle fontnoselect" @click="uncheckit(o,dialogshowItem)">×</span></div>
+                            </div>
+                        </div>
+                        <div class="clear">
+
+                            <el-button plain @click="jianchaFilterVisible=false" style="float:right;width: 80px;">取消</el-button>
+                            <el-button type="primary" @click="dialogconfirm()"  style="float:right;margin-right: 15px;width: 80px;">确定</el-button>
+                        </div>
+                    </el-dialog>
+
+                   
+                    <div v-if="waiting"  style="position: fixed;top:53px;bottom: 0;left: 0;right: 0;z-index:3000;background: white;opacity:0.6;">
+                    </div>
+                    <div v-if="waiting" style="position: fixed;top:53px;bottom: 0;left: 0;right: 0;z-index:3001;padding-left: 50%;    padding-top: 20%;">
+                        <div ><img src="static/img/loading.gif"></div>
+                        <div style="padding: 0 0 0 10px;color: #B4B4B4;">查询中</div>
+                    </div>
+                    
+                    <el-dropdown v-if="jiuzhenXiala"
+                                 @command="handleCommand"
+                                 trigger="click"
+                                 v-bind:style="'position: absolute;top:'+selectsite+'px;left: 35px;'">
+                          <span class="el-dropdown-link" ><div style="width: 73px;height: 22px;cursor: pointer;"></div>
+                          </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="1">全部就诊</el-dropdown-item>
+                            <el-dropdown-item command="2">门/急诊</el-dropdown-item>
+                            <el-dropdown-item command="3">住院</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+
+
+                    <el-dropdown v-if="shoushuXiala"
+                                 @command="handleCommand_ShouShu"
+                                 trigger="click"
+                                 v-bind:style="'position: absolute;top:'+selectsite_shoushu+'px;left: 35px;'">
+                          <span class="el-dropdown-link" ><div style="width: 73px;height: 22px;cursor: pointer;"></div>
+                          </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="1">手术</el-dropdown-item>
+                            <el-dropdown-item command="2">首页手术</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    
+                  
+  
+                   
+                    <el-dialog
+                            title="提示"
+                            :visible.sync="centerDeleteVisible"
+                            width="30%"
+                    >
+                        <span>是否删除中心事件？</span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button plain @click="centerDeleteVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="deleteCentralEvents();centerDeleteVisible = false">确 定</el-button>
+                        </span>
+                    </el-dialog>
+                   
+                    <el-dialog
+                            title="提示"
+                            :visible.sync="centerQuickVisible"
+                            width="30%"
+                    >
+                        <span>是否设为中心事件？</span>
+                        <span slot="footer" class="dialog-footer">
+                            <el-button plain @click="centerQuickVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="addCentralEvents();centerQuickVisible = false">确 定</el-button>
+                        </span>
+                    </el-dialog>
+
+                  
+   
+                  
+                </el-tab-pane>
+       
+            </el-tabs>
+
+        </div>
+        <el-dialog
+                title="设置标签"
+                :visible.sync="dialogVisible"
+                :before-close="handleClose">
+            <div class="dialog-body">
+                <div v-for="(tagList,index) in timeTagList" style="margin-bottom:20px;">
+                    <el-tag type="success">{{tagList.showName}}</el-tag>
+                    <el-select v-model="tagDomainVals[index]" placeholder="请选择">
+                        <el-option
+                                v-for="item in tagList.tagMapList"
+                                :key="item.domainId"
+                                :label="item.domainVal"
+                                :value="item.domainId">
+                        </el-option>
+                    </el-select>
+                </div>
+
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button class="el-button el-button--grey is-plain" @click="dialogVisible = false" round >取 消</el-button>
+                <el-button class="el-button"  @click="labelBtnFunction">确 定</el-button>
+            </div>
+        </el-dialog>
+    </main>
+
+</div>   <!-- app结束 -->
+
+<script type="text/javascript" src="static/js/timeline/polyfill.js"></script>
+<script src="static/assets/js/jquery-2.1.0.min.js?v=2.0.1" type="text/javascript"></script>
+<script src="static/assets/js/vue.js?v=2.0.1" charset="UTF-8"></script>
+<script src="static/assets/js/element-ui2.13.js?v=2.0.1" type="text/javascript" charset="UTF-8"></script>
+<script type="text/javascript" src="static/assets/js/echarts.4.20.min.js"></script>
+<!-- <script type="text/javascript" src="../data/timeline3.json"></script> -->
+<script type="text/javascript">
+    var oScript1= document.createElement("script"); 
+    oScript1.type = "text/javascript";
+    
+
+
+    var oHead = document.getElementsByTagName('HEAD').item(0); 
+    var oScript= document.createElement("script"); 
+    oScript.type = "text/javascript"; 
+
+ 
+    oScript1.src="../data/timeline3.json"; //配置化时间轴
+    oHead.appendChild(oScript1); 
+    oScript.src="static/js/timeline/timeline3.js?v=2"; //配置化时间轴
+    
+    // else if (environment==="bysy"){
+    //     oScript.src="static/js/timeline/timeline2.js?v=1"; //科研同款时间轴
+    // }
+     
+    oHead.appendChild(oScript); 
+</script>
+<!-- <script type="text/javascript" src="static/js/timeline/timeline2.js?v=004"></script> -->
+
+</body>
+</html>

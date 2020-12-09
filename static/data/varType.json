@@ -1,0 +1,9 @@
+[
+	{"value":"num","label":"数字"},
+	{"value":"text","label":"文本"},
+	{"value":"date","label":"日期"},
+	{"value":"boolean","label":"boolean"},
+	{"value":"enum","label":"少量枚举"},
+	{"value":"massenum","label":"海量枚举"},
+	{"value":"shorttext","label":"短文本"}
+]

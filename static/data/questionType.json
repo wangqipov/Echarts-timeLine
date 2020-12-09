@@ -1,0 +1,13 @@
+[
+	{"value":"radio","label":"单选"},
+	{"value":"PCA","label":"省市区"},
+	{"value":"checkbox","label":"多选"},
+	{"value":"text","label":"文本框"},
+	{"value":"select","label":"下拉"},
+	{"value":"textarea","label":"文本域"},
+	{"value":"picture","label":"图片"},
+	{"value":"file","label":"文件"},
+	{"value":"date","label":"日期"},
+	{"value":"datetime","label":"日期时间"},
+	{"value":"VAS","label":"视觉模拟评分"}
+]
