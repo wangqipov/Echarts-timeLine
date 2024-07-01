@@ -8,7 +8,7 @@ var app = new Vue({
         //专病库变量结束
 //时间轴变量
         resourceType:1,//1表示内部调用，0表示外部调用（电子病历）
-        hulitizhengyangli:'',//护理key拼接的头,''为新版,'hulitizhengyangli.'为老版
+        hulitizhengyangli:'',//护理key拼接的头
         titleFontSize:12,//子轴名字体大小
         sonTitleColor:'#0D0D0D',//子轴标题颜色
         valueshow:true,//中心事件值型输入框
